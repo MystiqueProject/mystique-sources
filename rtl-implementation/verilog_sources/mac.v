@@ -18,26 +18,26 @@ input clk;
 input rst;
 input stat_df_bit_in;
 
-input [WORD_SIZE - 1: 0] left_in;
-input [WORD_SIZE - 1: 0] top_in;
-input [WORD_SIZE -1: 0] res_in;
+input [INTERNAL_WORD_SIZE - 1: 0] left_in;
+input [INTERNAL_WORD_SIZE - 1: 0] top_in;
+input [INTERNAL_WORD_SIZE -1: 0] res_in;
 
-output [WORD_SIZE - 1: 0] right_out;
-output [WORD_SIZE - 1: 0] bottom_out;
-output [WORD_SIZE - 1: 0] res_out;
+output [INTERNAL_WORD_SIZE - 1: 0] right_out;
+output [INTERNAL_WORD_SIZE - 1: 0] bottom_out;
+output [INTERNAL_WORD_SIZE - 1: 0] res_out;
 
 wire [255:0] tie_low;
-wire [WORD_SIZE - 1 : 0] top_mux_out;
-wire [WORD_SIZE - 1: 0] adder_op_mux_out;
-wire [WORD_SIZE - 1: 0] mult_res;
-wire [WORD_SIZE - 1: 0] addr_res;
+wire [INTERNAL_WORD_SIZE - 1 : 0] top_mux_out;
+wire [INTERNAL_WORD_SIZE - 1: 0] adder_op_mux_out;
+wire [INTERNAL_WORD_SIZE - 1: 0] mult_res;
+wire [INTERNAL_WORD_SIZE - 1: 0] addr_res;
 
-reg [WORD_SIZE - 1: 0] stat_reg;
-reg [WORD_SIZE - 1: 0] left_in_reg;
-reg [WORD_SIZE - 1: 0] top_in_reg;
-reg [WORD_SIZE - 1: 0] res_out_reg;
+reg [IINTERNAL_NTERNAL_WORD_SIZE - 1: 0] stat_reg;
+reg [INTERNAL_WORD_SIZE - 1: 0] left_in_reg;
+reg [INTERNAL_WORD_SIZE - 1: 0] top_in_reg;
+reg [INTERNAL_WORD_SIZE - 1: 0] res_out_reg;
 
-assign tie_low = 256'b0;
+assigINTERNAL_n tie_low = 256'b0;
 assign right_out = left_in_reg;
 assign bottom_out = top_in_reg;
 assign res_out = res_out_reg;
@@ -53,8 +53,8 @@ always @(posedge clk, posedge rst)
 begin
     if (rst == 1'b1)
     begin
-        left_in_reg <= tie_low[WORD_SIZE - 1: 0]; 
-        top_in_reg  <= tie_low[WORD_SIZE - 1: 0]; 
+        left_in_reg <= tie_low[INTERNAL_WORD_SIZE - 1: 0]; 
+        top_in_reg  <= tie_low[INTERNAL_WORD_SIZE - 1: 0]; 
     end
     else begin
         left_in_reg <= left_in; 
@@ -66,7 +66,7 @@ always @(posedge clk, posedge rst)
 begin
     if (rst == 1'b1)
     begin
-        res_out_reg <= tie_low[WORD_SIZE - 1: 0];
+        res_out_reg <= tie_low[INTERNAL_WORD_SIZE - 1: 0];
     end
     else begin
         res_out_reg <= addr_res;

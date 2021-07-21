@@ -1,0 +1,12 @@
+source /tools/synopsys/vcs/P-2019.06-SP2/cshrc.vcs
+#source /tools/synopsys/vcs/m201703sp21/cshrc.vcs
+mkdir sim
+cd sim
+#vcs +v2k -debug_all -f ../filelist -sverilog -cpp /usr/bin/g++ | tee run.log
+vcs -PP -sverilog -debug_all -full64 -f ../filelist +v2k +neg_tchk -l run.log -cpp /usr/bin/g++
+cd ..
+
+if (-e output) then
+    rm -rf output
+endif
+mv sim output

@@ -1,6 +1,6 @@
-module #(
-    WORD_SIZE
-) mac (
+module mac #(
+    parameter WORD_SIZE = 8
+) (
     clk,
     rst,
     stat_df_bit_in,             // This bit determines if the dataflow used is stationary and is used to set muxes for inputs to mult and adder
@@ -12,8 +12,7 @@ module #(
     res_out
 );
 
-parameter WORD_SIZE = 8;
-localparam WORD_SIZE = 2 * WORD_SIZE;
+localparam INTERNAL_WORD_SIZE = 2 * WORD_SIZE;
 
 input clk;
 input rst;

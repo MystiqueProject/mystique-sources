@@ -58,11 +58,13 @@ def test_xgboost():
         num_points += 1
 
     accuracy = 100 * num_correct / num_points
-    print('Accuracy = ' + str(accuracy) + '%')
+    acc_log = 'Accuracy = ' + str(accuracy) + '%'
+    print(acc_log)
 
     save_predictions = True
     if save_predictions:
         resfile = open('mys_xgb_pred_results.csv', 'w')
+        resfile.write(acc_log + '\n')
 
         for query, label, pred_label in zip(xtest, ytest, predicted_y):
             log = str(list(query)) + ',,' + str(label[0]) + ',,' + str(pred_label)

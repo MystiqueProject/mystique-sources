@@ -5,15 +5,11 @@ from dataset_utilities import dataset_utils
 
 
 def test_xgboost():
-    dataset_loc = '/home/anand/project-local-repos/' \
-                  '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
-                  'GeneratedData/datasets/expanded'
+    dataset_loc = '../GeneratedData/datasets/expanded'
     #dataset_loc = '.'
     dataset_filename = dataset_loc + '/dataset_2e14_Macs_new_cost.csv'
 
-    config_loc = '/home/anand/project-local-repos/' \
-                 '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
-                 'GeneratedData/configs'
+    config_loc = '../GeneratedData/configs'
     #config_loc = '.'
     config_filename = config_loc + '/Configs_2e14_Macs_new_cost.csv'
 

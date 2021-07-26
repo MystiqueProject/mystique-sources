@@ -124,28 +124,28 @@ class dataset_utils:
                 pc = classes[cid][3]
                 df = classes[cid][4]
 
-                Sr = 0
-                Sc = 0
+                Srprime = 0
+                Scprime = 0
                 T = 0
 
+                # Note in this project we do not want to divide along K dim as mystique does not have a mechanism to 
+                # gather all the partial sums.
+                # Instead in IS and WS we want to see if the time dimension can be further partitioned 
                 if df == 0:
-                    Sr = M
-                    Sc = N
+                    Srprime = math.ceil(M / pr)
+                    Scprime = math.ceil(N / pc)
                     T = K
                 elif df == 1:
-                    Sr = K
-                    Sc = N
-                    T = M
+                    Srprime = K
+                    Scprime = math.ceil(N / pc)
+                    T = math.ceil(M / pr)       # These are copies of the array which get separate elements of IFMAP but same elements of filter 
                 elif df == 2:
-                    Sr = K
-                    Sc = M
-                    T = N
+                    Srprime = K
+                    Scprime = math.ceil(M / pc)
+                    T = math.ceil(N / pr)       # Similar to WS but instead of IFMAP filters get divided 
 
-                srPrime = math.ceil(Sr / pr)
-                scPrime = math.ceil(Sc / pc)
-
-                rowFolds = math.ceil(srPrime / r)
-                colFolds = math.ceil(scPrime / c)
+                rowFolds = math.ceil(Srprime / r)
+                colFolds = math.ceil(Scprime / c)
 
                 runtime = (2 * r + c + T - 2) * rowFolds * colFolds
                 runtimeArr.append(runtime)  # To see if there are multiple entries with same min runtime
@@ -464,7 +464,7 @@ class dataset_utils:
 
 
 if __name__ == '__main__':
-    pow = 18
+    pow = 14
     num_mac = 2 ** pow
     num_samples = 2 * 10 ** 6
     config_filename = 'Configs_2e' + str(pow) + '_Macs.csv'

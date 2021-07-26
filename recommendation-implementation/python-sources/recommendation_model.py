@@ -237,7 +237,8 @@ class mysarchitect:
 if __name__ == '__main__':
     #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-    dataset_csv_file = "./datasets/dataset_2e12_Macs.csv"
+    #dataset_csv_file = "./datasets/dataset_2e12_Macs.csv"
+    dataset_csv_file = "../GeneratedData/datasets/expanded/dataset_2e14_Macs_new_cost.csv"
     mys = mysarchitect()
     mys.set_model_params(deep_layer_dim=256 ,output_vec_length=858)
     mys.set_training_params(epochs=20)

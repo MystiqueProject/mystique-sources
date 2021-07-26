@@ -8,12 +8,14 @@ def test_xgboost():
     dataset_loc = '/home/anand/project-local-repos/' \
                   '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
                   'GeneratedData/datasets/expanded'
-    dataset_filename = dataset_loc + '/dataset_2e14_Macs.csv'
+    #dataset_loc = '.'
+    dataset_filename = dataset_loc + '/dataset_2e14_Macs_new_cost.csv'
 
     config_loc = '/home/anand/project-local-repos/' \
                  '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
                  'GeneratedData/configs'
-    config_filename = config_loc + '/Configs_2e14_Macs.csv'
+    #config_loc = '.'
+    config_filename = config_loc + '/Configs_2e14_Macs_new_cost.csv'
 
     datautil = dataset_utils()
     datautil.read_dataset_from_file(filename=dataset_filename)
@@ -78,12 +80,12 @@ def test_svc():
     dataset_loc = '/home/anand/project-local-repos/' \
                   '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
                   'GeneratedData/datasets/expanded'
-    dataset_filename = dataset_loc + '/dataset_2e14_Macs.csv'
+    dataset_filename = dataset_loc + '/dataset_2e14_Macs_new_cost.csv'
 
     config_loc = '/home/anand/project-local-repos/' \
                  '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
                  'GeneratedData/configs'
-    config_filename = config_loc + '/Configs_2e14_Macs.csv'
+    config_filename = config_loc + '/Configs_2e14_Macs_new_cost.csv'
 
     datautil = dataset_utils()
     datautil.read_dataset_from_file(filename=dataset_filename)
@@ -111,7 +113,7 @@ def test_svc():
 
     #
     model = SupportVectorClassifier()
-    kernel = 'rbf'
+    kernel = 'linear'
     model.set_params(verbose=True, kernel=kernel)
     model.create_model()
     model.fit_data(xtrain, ytrain)
@@ -150,12 +152,12 @@ def test_MLP():
     dataset_loc = '/home/anand/project-local-repos/' \
                   '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
                   'GeneratedData/datasets/expanded'
-    dataset_filename = dataset_loc + '/dataset_2e14_Macs.csv'
+    dataset_filename = dataset_loc + '/dataset_2e14_Macs_new_cost.csv'
 
     config_loc = '/home/anand/project-local-repos/' \
                  '6.Mystique/1.Repositories/mystique-sources/recommendation-implementation/' \
                  'GeneratedData/configs'
-    config_filename = config_loc + '/Configs_2e14_Macs.csv'
+    config_filename = config_loc + '/Configs_2e14_Macs_new_cost.csv'
 
     datautil = dataset_utils()
     datautil.read_dataset_from_file(filename=dataset_filename)
@@ -183,7 +185,7 @@ def test_MLP():
     ytest = ydata[num_train_data:, :]
 
     #
-    hidden_layer_list = [128, 128]
+    hidden_layer_list = [128]
     model = FeedForwardMLP()
     model.set_params(verbose=True, num_output_categories=num_outputs,
                      num_input_features=3, hidden_nodes_list=hidden_layer_list)
@@ -224,6 +226,6 @@ def test_MLP():
 
 
 if __name__ == '__main__':
-    test_MLP()
-    #test_xgboost()
+    #test_MLP()
+    test_xgboost()
     #test_svc()

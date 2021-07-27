@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from airchitect.scikit_models.xgboost_classifier_model import XGBoostClassifier
 from airchitect.scikit_models.support_vector_classifier_model import SupportVectorClassifier
 from airchitect.keras_model.feed_forward_mlp import FeedForwardMLP
@@ -220,8 +222,72 @@ def test_MLP():
 
         resfile.close()
 
+def get_one_label_to_predicted_distribution(filename='', num_classes=459):
+    label_frequency_distribution = [0] * num_classes
+    predicted_frequency_distribution = [0] * num_classes
+
+    predictions_file = open(filename, 'r')
+    first = True
+
+    for row in predictions_file:
+        if first:
+            first = False
+            continue
+
+        elems = row.strip().split(',,')
+        label_val = int(elems[1])
+        pred_val = int(elems[2])
+
+        label_frequency_distribution[label_val] += 1
+        predicted_frequency_distribution[pred_val] += 1
+
+    return label_frequency_distribution, predicted_frequency_distribution
+
+
+def plot_label_to_predicted_distribution_one(num_classes=858,
+                                             filename='',
+                                             save=True,
+                                             save_filename='xgb_delta_distribution.csv',
+                                             plot=True):
+    #filename = './predicted_results/xgboost/mys_xgb_pred_results.csv'
+    #filename = './predicted_results/xgb_experiment_pred_results.csv'
+    #filename = './predicted_results/mlp/mys_mlp_256_256_ep30_pred_results.csv'
+    num_classes = 450
+
+    label_distr, pred_distr = get_one_label_to_predicted_distribution(filename=filename,
+                                                                      num_classes=num_classes)
+
+    x = [a for a in range(len(label_distr))]
+    #x1 = [a - 0.2 for a in x]
+    #plt.bar(x1[:300], label_distr[:300], width=0.4, label='Ground truth')
+
+    #x2 = [a + 0.2 for a in x]
+    #plt.bar(x2[:300], pred_distr[:300], width=0.4, label='Predicted')
+
+    diff = [a -b for a, b in zip(label_distr, pred_distr)]
+
+    if save:
+        delta_distr_file = open(save_filename, 'w')
+        for d in diff:
+            log = str(d) + ',\n'
+            delta_distr_file.write(log)
+        delta_distr_file.close()
+
+    if plot:
+        max_idx = num_classes
+        plt.bar(x[:max_idx], diff[:max_idx], label='diff')
+
+        plt.legend()
+        #plt.yscale('log', base=10)
+        plt.show()
+
 
 if __name__ == '__main__':
     #test_MLP()
     test_xgboost()
     #test_svc()
+
+    filename = './predicted_results/xgboost/mys_xgb_pred_results.csv'
+    plot_label_to_predicted_distribution_one(filename=filename, num_classes=858,
+                                             save=True, save_filename='xgboost_diff.csv',
+                                             plot=True)

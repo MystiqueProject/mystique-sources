@@ -233,14 +233,48 @@ class mysarchitect:
         self.test_model(save_logs=True, test_log_filename=testlog_filename)
 
 
+def gen_testlog_var_macs():
+    emb = 8
+    hidden = 128
+    epochs = 30
 
-if __name__ == '__main__':
+    mac_exp_arr = [12, 13, 14, 15, 16, 17, 18, 19, 20]
+    num_config_arr = [495, 660, 858, 1092, 1365, 1680, 2040, 2448, 2907 ]
+    print('Out')
+    
+    for idx in range(8,9):
+        mac_exp = mac_exp_arr[idx]
+        num_config = num_config_arr[idx]
+
+        dataset_csv_file = "../GeneratedData/datasets/expanded/dataset_2e" + str(mac_exp) +"_Macs.csv"
+        mys = mysarchitect()
+
+        mys.set_model_params(embedding_size=emb, deep_layer_dim=hidden ,output_vec_length=num_config)
+        mys.set_training_params(epochs=epochs)
+        
+        run_prefix='mysarchitect_' + str(emb) + 'emb_' + str(hidden) + 'hid_' + str(epochs) + 'ep_2e' + str(mac_exp) + 'macs'
+        print('Here')
+        mys.run_end_to_end(dataset_csv_file, run_prefix=run_prefix)
+
+
+def run_main():
     #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
     #dataset_csv_file = "./datasets/dataset_2e12_Macs.csv"
     dataset_csv_file = "../GeneratedData/datasets/expanded/dataset_2e14_Macs_new_cost.csv"
     mys = mysarchitect()
-    mys.set_model_params(deep_layer_dim=256 ,output_vec_length=858)
-    mys.set_training_params(epochs=20)
-    mys.run_end_to_end(dataset_csv_file, run_prefix='mysarchitect_20ep_2e12macs')
+    # TODO: Try training emb=4 with larger epochs, the network was still training with 20 ep
+    emb = 4
+    hidden = 128
+    epochs = 30
+    num_mac_exp = 14
+    mys.set_model_params(embedding_size=emb, deep_layer_dim=hidden ,output_vec_length=858)
+    mys.set_training_params(epochs=epochs)
+    
+    run_prefix='mysarchitect_' + str(emb) + 'emb_' + str(hidden) + 'hid_' + str(epochs) + 'ep_2e' + str(num_mac_exp) + 'macs'
+    mys.run_end_to_end(dataset_csv_file, run_prefix=run_prefix)
     #mys.build_mlp_model()
+
+if __name__ == '__main__':
+    gen_testlog_var_macs()
+

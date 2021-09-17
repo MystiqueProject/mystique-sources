@@ -1,4 +1,9 @@
 .idea/
 personal_access_token_sept2022
 
+./recommendation-implementation/GeneratedData/datasets/expanded/*
+./recommendation-implementation/python-sources/__pycache__/*
+./recommendation-implementation/python-sources/tboard_logs/scalars/*
+
+
 

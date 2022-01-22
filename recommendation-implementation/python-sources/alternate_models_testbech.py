@@ -235,8 +235,8 @@ def get_one_label_to_predicted_distribution(filename='', num_classes=459):
             continue
 
         elems = row.strip().split(',,')
-        label_val = int(elems[1])
-        pred_val = int(elems[2])
+        label_val = int(elems[1].split(',')[0].strip())
+        pred_val = int(elems[2].split(',')[0].strip())
 
         label_frequency_distribution[label_val] += 1
         predicted_frequency_distribution[pred_val] += 1
@@ -252,7 +252,6 @@ def plot_label_to_predicted_distribution_one(num_classes=858,
     #filename = './predicted_results/xgboost/mys_xgb_pred_results.csv'
     #filename = './predicted_results/xgb_experiment_pred_results.csv'
     #filename = './predicted_results/mlp/mys_mlp_256_256_ep30_pred_results.csv'
-    num_classes = 450
 
     label_distr, pred_distr = get_one_label_to_predicted_distribution(filename=filename,
                                                                       num_classes=num_classes)
@@ -284,10 +283,11 @@ def plot_label_to_predicted_distribution_one(num_classes=858,
 
 if __name__ == '__main__':
     #test_MLP()
-    test_xgboost()
+    #test_xgboost()
     #test_svc()
 
-    filename = './predicted_results/xgboost/mys_xgb_pred_results.csv'
+    #filename = './predicted_results/mystique_new_cost_model/mys_mlp_128_128_ep30_pred_results.csv'
+    filename = '../GeneratedData/prediction_vs_testlabels_log/mysarchitect_20ep_2e14macs_testlog.csv'
     plot_label_to_predicted_distribution_one(filename=filename, num_classes=858,
-                                             save=True, save_filename='xgboost_diff.csv',
+                                             save=True, save_filename='mys_2e14mac_ep20_diff.csv',
                                              plot=True)

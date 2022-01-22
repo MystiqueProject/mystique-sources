@@ -17,10 +17,12 @@ def analyze_mispredictions(log_filename):
     # Calculate the runtime of golden and mispredicted labels
     # Normalize the delta wrt actual runtime to see the impact
     # Report and plot
+    plot_mismatches = False
+    plot_norm_performance = True
 
     first = True
     data_obj = data()
-    stored_configs = "./configs/Configs_2e14_Macs.csv"
+    stored_configs = "../GeneratedData/configs/Configs_2e14_Macs_new_cost.csv"
 
     num_elem = 0
     mispred  = 0
@@ -32,6 +34,7 @@ def analyze_mispredictions(log_filename):
 
     mismatched_runtime_diff_vec = []
     normalized_mismatched_runtime_diff_vec = []
+    normalized_performance_vec = []
 
     mispred_file = open(log_filename, 'r')
     data_obj.read_config_from_file(case=0, filename=stored_configs)
@@ -84,8 +87,11 @@ def analyze_mispredictions(log_filename):
             delta = abs(pRuntime - lRuntime)
             norm_delta_perc = delta / lRuntime * 100
 
+            norm_performance = (lRuntime / pRuntime)   # Performance is calculated as inverse of runtime
+
             mismatched_runtime_diff_vec.append(delta)
             normalized_mismatched_runtime_diff_vec.append(norm_delta_perc)
+            normalized_performance_vec.append(norm_performance)
 
     avg_delta = sum(mismatched_runtime_diff_vec) / len(mismatched_runtime_diff_vec)
     avg_norm_delta = sum(normalized_mismatched_runtime_diff_vec) / len(normalized_mismatched_runtime_diff_vec)
@@ -104,24 +110,32 @@ def analyze_mispredictions(log_filename):
     log += 'Dataflow mismatch: ' + str(mismatch_df)
     print(log)
 
-    mismatches = [x for x in range(len(normalized_mismatched_runtime_diff_vec))]
-    log_mismatches_norm = []
-    for x in normalized_mismatched_runtime_diff_vec:
-        if not x == 0:
-            val = math.log(x,10)
-        else:
-            val = x
-        log_mismatches_norm.append(val)
+    if plot_mismatches:
+        mismatches = [x for x in range(len(normalized_mismatched_runtime_diff_vec))]
+        log_mismatches_norm = []
+        for x in normalized_mismatched_runtime_diff_vec:
+            if not x == 0:
+                val = math.log(x,10)
+            else:
+                val = x
+            log_mismatches_norm.append(val)
 
-    plt.bar(x=mismatches,height=normalized_mismatched_runtime_diff_vec)
-    plt.ylim(0,300)
-    plt.xlabel('Samples mispredicted')
-    plt.ylabel('% difference runtime wrt best')
-    #plt.bar(x=mismatches,height=log_mismatches_norm)
-    plt.show()
+        plt.bar(x=mismatches,height=normalized_mismatched_runtime_diff_vec)
+        plt.ylim(0,300)
+        plt.xlabel('Samples mispredicted')
+        plt.ylabel('% difference runtime wrt best')
+        #plt.bar(x=mismatches,height=log_mismatches_norm)
+        plt.show()
+
+    if plot_norm_performance:
+        sorted_norm_performance = normalized_performance_vec
+        sorted_norm_performance.sort()
+
+        plt.plot(sorted_norm_performance)
+        plt.show()
 
 
 if __name__ == '__main__':
-    test_log = "./logs/mysarchitect_testlog.csv"
+    test_log = "../GeneratedData/prediction_vs_testlabels_log/mysarchitect_20ep_2e14macs_testlog.csv"
     analyze_mispredictions(test_log)
 
